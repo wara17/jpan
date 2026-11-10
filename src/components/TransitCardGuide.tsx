@@ -82,29 +82,29 @@ export default function TransitCardGuide() {
       {transitCards.map((card) => (
         <div
           key={card.id}
-          className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
+          className="flex flex-col gap-3 rounded-2xl border border-sky-100 bg-white shadow-sm shadow-sky-100 p-4"
         >
           <CardMock card={card} />
           <div className="space-y-1.5 text-xs">
-            <p className="text-zinc-600 dark:text-zinc-400">
-              <span className="font-semibold text-zinc-800 dark:text-zinc-200">ใช้ทำอะไร: </span>
+            <p className="text-slate-600">
+              <span className="font-semibold text-slate-800">ใช้ทำอะไร: </span>
               {card.usedFor}
             </p>
-            <p className="text-zinc-600 dark:text-zinc-400">
-              <span className="font-semibold text-zinc-800 dark:text-zinc-200">ซื้อที่ไหน: </span>
+            <p className="text-slate-600">
+              <span className="font-semibold text-slate-800">ซื้อที่ไหน: </span>
               {card.whereToBuy}
             </p>
-            <p className="text-zinc-600 dark:text-zinc-400">
-              <span className="font-semibold text-zinc-800 dark:text-zinc-200">ราคา: </span>
+            <p className="text-slate-600">
+              <span className="font-semibold text-slate-800">ราคา: </span>
               {card.price}
             </p>
             {card.topUp && (
-              <p className="rounded-md bg-amber-50 px-2 py-1 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
+              <p className="rounded-md bg-amber-50 px-2 py-1 text-amber-800">
                 <span className="font-semibold">เติมขั้นต่ำ: </span>
                 {card.topUp}
               </p>
             )}
-            {card.note && <p className="text-[11px] text-zinc-400">{card.note}</p>}
+            {card.note && <p className="text-[11px] text-slate-400">{card.note}</p>}
           </div>
         </div>
       ))}

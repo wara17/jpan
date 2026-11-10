@@ -1,47 +1,57 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, Tooltip, ZoomControl, useMap } from "react-leaflet";
 import L from "leaflet";
-import type { Activity, Day } from "@/lib/itinerary";
-import { accommodation } from "@/lib/itinerary";
+import type { Day } from "@/lib/itinerary";
+import { accommodation, hasCoords, mapStops } from "@/lib/itinerary";
 
-// Leaflet's default marker icons reference image paths that don't resolve
-// correctly through Next.js's bundler, so point them at the CDN instead.
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-});
+// OpenStreetMap tiles: free, no API key required.
+const TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+const TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
-const hotelIcon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [30, 49],
-  iconAnchor: [15, 49],
-  className: "hotel-marker",
-});
-
-type LocatedActivity = Activity & { lat: number; lng: number };
-
-function hasCoords(a: Activity): a is LocatedActivity {
-  return typeof a.lat === "number" && typeof a.lng === "number";
+// Markers are drawn with HTML/CSS (divIcon), so no external marker images are needed.
+function numberIcon(n: number, color: string) {
+  return L.divIcon({
+    className: "trip-pin",
+    html: `<span style="background:${color}">${n}</span>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
+    popupAnchor: [0, -14],
+  });
 }
 
-function FitBounds({ points }: { points: { lat: number; lng: number }[] }) {
+const hotelIcon = L.divIcon({
+  className: "trip-pin trip-pin-hotel",
+  html: "<span>🏨</span>",
+  iconSize: [34, 34],
+  iconAnchor: [17, 17],
+  popupAnchor: [0, -17],
+});
+
+function mapsLink(lat: number, lng: number) {
+  return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+}
+
+function FitBounds({ points }: { points: [number, number][] }) {
   const map = useMap();
+  const key = points.map((p) => p.join(",")).join("|");
   useEffect(() => {
     if (points.length === 0) return;
-    const bounds = L.latLngBounds(points.map((p) => [p.lat, p.lng]));
-    map.fitBounds(bounds, { padding: [40, 40] });
-  }, [map, points]);
+    map.fitBounds(L.latLngBounds(points), { padding: [40, 40], maxZoom: 15 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, key]);
   return null;
 }
 
 export default function TripMap({ days, activeDay }: { days: Day[]; activeDay: number | "all" }) {
   const visibleDays = activeDay === "all" ? days : days.filter((d) => d.day === activeDay);
-  const points = visibleDays.flatMap((d) => d.activities.filter(hasCoords));
+
+  const points = useMemo<[number, number][]>(() => {
+    const all = visibleDays.flatMap((d) => d.activities.filter(hasCoords).map((a) => [a.lat, a.lng] as [number, number]));
+    return all.length ? all : [[accommodation.lat, accommodation.lng]];
+  }, [visibleDays]);
 
   return (
     <MapContainer
@@ -52,63 +62,36 @@ export default function TripMap({ days, activeDay }: { days: Day[]; activeDay: n
       className="h-full w-full"
     >
       <ZoomControl position="topright" zoomInTitle="ซูมเข้า" zoomOutTitle="ซูมออก" />
-      <TileLayer
-        attribution='&copy; <a href="https://carto.com/attributions">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-      />
-
-      <Marker position={[accommodation.lat, accommodation.lng]} icon={hotelIcon}>
-        <Tooltip permanent direction="top" offset={[0, -46]} className="trip-tooltip trip-tooltip-hotel">
-          🏨 {accommodation.name}
-        </Tooltip>
-        <Popup>
-          <strong>{accommodation.name}</strong>
-          <br />
-          {accommodation.address}
-          <br />
-          <a
-            href={`https://www.google.com/maps/search/?api=1&query=${accommodation.lat},${accommodation.lng}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600"
-          >
-            เปิดใน Google Maps ↗
-          </a>
-        </Popup>
-      </Marker>
+      <TileLayer attribution={TILE_ATTRIBUTION} url={TILE_URL} maxZoom={19} />
 
       {visibleDays.map((day) => {
-        const located = day.activities.filter(hasCoords);
+        const route = day.activities.filter(hasCoords);
+        const stops = mapStops(day);
         return (
           <div key={day.day}>
             <Polyline
-              positions={located.map((a) => [a.lat, a.lng])}
-              pathOptions={{ color: day.color, weight: 4, opacity: 0.7 }}
+              positions={route.map((a) => [a.lat, a.lng])}
+              pathOptions={{ color: day.color, weight: 4, opacity: 0.75, dashArray: "6 8" }}
             />
-            {located.map((a, i) => (
-              <Marker key={`${day.day}-${i}`} position={[a.lat, a.lng]}>
-                <Tooltip permanent direction="top" offset={[0, -30]} className="trip-tooltip">
+            {stops.map((a, i) => (
+              <Marker key={`${day.day}-${i}`} position={[a.lat, a.lng]} icon={numberIcon(i + 1, day.color)}>
+                <Tooltip direction="top" offset={[0, -14]} className="trip-tooltip">
                   {a.title}
                 </Tooltip>
                 <Popup>
                   <strong>
-                    วันที่ {day.day} · {a.time}
+                    วันที่ {day.day} · จุดที่ {i + 1} · {a.time}
                   </strong>
                   <br />
                   {a.title}
                   {a.address ? (
                     <>
                       <br />
-                      <span className="text-gray-500">{a.address}</span>
+                      <span className="text-slate-500">{a.address}</span>
                     </>
                   ) : null}
                   <br />
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${a.lat},${a.lng}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600"
-                  >
+                  <a href={mapsLink(a.lat, a.lng)} target="_blank" rel="noopener noreferrer" className="text-sky-700">
                     เปิดใน Google Maps ↗
                   </a>
                 </Popup>
@@ -118,7 +101,27 @@ export default function TripMap({ days, activeDay }: { days: Day[]; activeDay: n
         );
       })}
 
-      <FitBounds points={points.length ? points : [accommodation]} />
+      <Marker position={[accommodation.lat, accommodation.lng]} icon={hotelIcon} zIndexOffset={1000}>
+        <Tooltip permanent direction="top" offset={[0, -18]} className="trip-tooltip trip-tooltip-hotel">
+          {accommodation.name}
+        </Tooltip>
+        <Popup>
+          <strong>{accommodation.name}</strong>
+          <br />
+          {accommodation.address}
+          <br />
+          <a
+            href={mapsLink(accommodation.lat, accommodation.lng)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sky-700"
+          >
+            เปิดใน Google Maps ↗
+          </a>
+        </Popup>
+      </Marker>
+
+      <FitBounds points={points} />
     </MapContainer>
   );
 }

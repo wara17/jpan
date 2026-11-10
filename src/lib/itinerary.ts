@@ -864,3 +864,16 @@ export const importantNotes = [
   "กำหนดการนี้จัดทำเพื่อการท่องเที่ยวเท่านั้น อาจเปลี่ยนแปลงได้",
   "ทุกกิจกรรมขึ้นอยู่กับสภาพอากาศและเวลาทำการจริง ณ วันเดินทาง",
 ];
+
+export type LocatedActivity = Activity & { lat: number; lng: number };
+
+export function hasCoords(a: Activity): a is LocatedActivity {
+  return typeof a.lat === "number" && typeof a.lng === "number";
+}
+
+/** Stops shown as numbered pins on the map (the hotel has its own pin). */
+export function mapStops(day: Day): LocatedActivity[] {
+  return day.activities
+    .filter(hasCoords)
+    .filter((a) => !(a.lat === accommodation.lat && a.lng === accommodation.lng));
+}

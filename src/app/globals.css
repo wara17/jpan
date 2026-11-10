@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
+/* Winter theme: icy sky blue + snow white (light only) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f0f9ff;
+  --foreground: #0f172a;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -12,52 +14,83 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Thai place-name labels on the trip map */
+/* Gentle falling snow in the page header */
+.snowfall {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.9) 50%, transparent 51%),
+    radial-gradient(3px 3px at 80px 120px, rgba(255, 255, 255, 0.8) 50%, transparent 51%),
+    radial-gradient(2px 2px at 150px 60px, rgba(255, 255, 255, 0.7) 50%, transparent 51%),
+    radial-gradient(3px 3px at 210px 160px, rgba(255, 255, 255, 0.85) 50%, transparent 51%),
+    radial-gradient(2px 2px at 260px 20px, rgba(255, 255, 255, 0.75) 50%, transparent 51%);
+  background-size: 280px 200px;
+  animation: snow 14s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes snow {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 40px 200px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snowfall {
+    animation: none;
+  }
+}
+
+/* Map pins (HTML markers, no external images) */
+.trip-pin {
+  background: transparent;
+  border: none;
+}
+.trip-pin span {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 2px solid #fff;
+  color: #fff;
+  font: 700 12px/1 Arial, Helvetica, sans-serif;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.35);
+}
+.trip-pin-hotel span {
+  background: #0369a1;
+  font-size: 17px;
+}
+
+/* Place-name labels on the trip map */
 .leaflet-tooltip.trip-tooltip {
-  background: rgba(255, 255, 255, 0.95);
-  color: #27272a;
-  border: 1px solid #e4e4e7;
+  background: rgba(255, 255, 255, 0.96);
+  color: #0f172a;
+  border: 1px solid #bae6fd;
   border-radius: 6px;
   padding: 2px 7px;
   font-size: 11px;
   font-weight: 500;
   font-family: Arial, Helvetica, sans-serif;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 3px rgba(2, 132, 199, 0.15);
   white-space: nowrap;
 }
 .leaflet-tooltip.trip-tooltip-hotel {
   font-weight: 700;
-  border-color: #b45309;
-  color: #92400e;
+  border-color: #0369a1;
+  color: #075985;
 }
 .leaflet-tooltip.trip-tooltip::before {
-  border-top-color: rgba(255, 255, 255, 0.95);
-}
-
-@media (prefers-color-scheme: dark) {
-  .leaflet-tooltip.trip-tooltip {
-    background: rgba(24, 24, 27, 0.95);
-    color: #f4f4f5;
-    border-color: #3f3f46;
-  }
-  .leaflet-tooltip.trip-tooltip::before {
-    border-top-color: rgba(24, 24, 27, 0.95);
-  }
-  .leaflet-tooltip.trip-tooltip-hotel {
-    color: #fbbf24;
-    border-color: #b45309;
-  }
+  border-top-color: rgba(255, 255, 255, 0.96);
 }
