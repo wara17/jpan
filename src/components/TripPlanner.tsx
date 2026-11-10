@@ -20,6 +20,7 @@ import {
 import TransitCardGuide from "./TransitCardGuide";
 import PackingChecklist from "./PackingChecklist";
 import DayPhotos, { PhotoCredits } from "./DayPhotos";
+import TaxRefundGuide from "./TaxRefundGuide";
 
 const TripMap = dynamic(() => import("./TripMap"), {
   ssr: false,
@@ -262,7 +263,7 @@ export default function TripPlanner() {
                       )}
                       {a.note && (
                         <div className="mt-1 rounded-md bg-orange-50 px-2 py-1 text-xs text-orange-800">
-                          🍜 {a.note}
+                          {a.mapsQuery ? "🍜" : "💡"} {a.note}
                           {a.mapsQuery && (
                             <>
                               {" "}
@@ -347,6 +348,14 @@ export default function TripPlanner() {
           ธันวาคมคือฤดูหนาวของโตเกียว อากาศแห้งและหนาวเย็น เตรียมของให้ครบก่อนเดินทาง
         </p>
         <PackingChecklist />
+      </div>
+
+      <div className="mx-auto mt-8 max-w-5xl px-4">
+        <h2 className="mb-1 text-lg font-bold text-slate-900">💴 คืนภาษี (Tax Refund) ที่ควรรู้</h2>
+        <p className="mb-4 text-sm text-slate-500">
+          ช้อปแบบ Tax-Free ในญี่ปุ่น และของที่นำกลับเข้าไทย — ทริปนี้ใช้ระบบคืนภาษีแบบใหม่ของญี่ปุ่น
+        </p>
+        <TaxRefundGuide />
       </div>
 
       <div className="mx-auto mt-8 max-w-5xl px-4">
