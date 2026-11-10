@@ -113,6 +113,7 @@ export default function TripPlanner() {
                     <div className="text-slate-500">
                       {f.date} · {f.depart} → {f.arrive} ({f.duration})
                     </div>
+                    {f.baggage && <div className="mt-0.5 text-xs font-medium text-sky-700">🧳 {f.baggage}</div>}
                   </div>
                 ),
             )}
