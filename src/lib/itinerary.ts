@@ -604,6 +604,7 @@ export const itinerary: Day[] = [
       {
         time: "10:30 น.",
         title: "ช้อปปิ้งตลาดอาเมะโยโกะ (รอบสุดท้าย)", photo: "ameyoko",
+        note: "ถ้ากระเป๋าไม่พอใส่ของฝาก แถวนี้มีร้านขายกระเป๋าเดินทาง (ดูส่วน “ซื้อกระเป๋าเดินทางที่ไหน”)",
         address: "4 Chome-10-11 Ueno, Taito-ku, Tokyo",
         transportation: "เดิน",
         lat: 35.7099,
@@ -949,4 +950,75 @@ export const taxRefundGuide: TaxGuideSection[] = [
       "ของแบรนด์เนม/อุปกรณ์อิเล็กทรอนิกส์ราคาสูง เก็บใบเสร็จไว้เผื่อเจ้าหน้าที่ขอดู",
     ],
   },
+];
+
+export type LuggageShop = {
+  name: string;
+  area: string;
+  nearDay: string;
+  tier: "ประหยัด" | "ปานกลาง" | "ปานกลาง–สูง" | "สูง";
+  description: string;
+  mapsQuery: string;
+};
+
+/** Where to buy an extra suitcase along the route (search links rather than fixed branches). */
+export const luggageShops: LuggageShop[] = [
+  {
+    name: "Don Quijote (ดองกี้)",
+    area: "อุเอโนะ / อาซากุสะ / อากิฮาบาระ",
+    nearDay: "ทุกวัน (ใกล้โรงแรม)",
+    tier: "ประหยัด",
+    description:
+      "ร้านลดราคาที่มีเกือบทุกย่าน หลายสาขาเปิดดึกหรือ 24 ชม. มีกระเป๋าเดินทางหลายขนาดให้เลือก และทำ Tax-Free ได้",
+    mapsQuery: "Don Quijote near Ueno Station Tokyo",
+  },
+  {
+    name: "ร้านกระเป๋าย่านอาเมะโยโกะ",
+    area: "อุเอโนะ (เดินจากโรงแรมได้)",
+    nearDay: "วันที่ 1 และ 5",
+    tier: "ประหยัด",
+    description: "ในตลาดมีร้านขายกระเป๋าและของใช้เดินทาง สะดวกซื้อเช้าวันกลับก่อนไปสนามบิน",
+    mapsQuery: "suitcase shop Ameyoko Ueno Tokyo",
+  },
+  {
+    name: "Akky (Duty Free)",
+    area: "อากิฮาบาระ",
+    nearDay: "วันที่ 4",
+    tier: "ประหยัด",
+    description: "ร้านดิวตี้ฟรีสำหรับนักท่องเที่ยวย่านอากิฮาบาระ มีกระเป๋าเดินทางราคาถูกรวมอยู่กับของอื่นๆ",
+    mapsQuery: "Akky duty free Akihabara",
+  },
+  {
+    name: "Yodobashi Akiba / Bic Camera",
+    area: "อากิฮาบาระ / ชินจูกุ / อุเอโนะ",
+    nearDay: "วันที่ 2 และ 4",
+    tier: "ปานกลาง–สูง",
+    description:
+      "ห้างเครื่องใช้ไฟฟ้าที่มีแผนกกระเป๋าเดินทางแบรนด์ญี่ปุ่นและแบรนด์สากล ได้แต้มสะสม และทำ Tax-Free ได้",
+    mapsQuery: "Yodobashi Akiba suitcase",
+  },
+  {
+    name: "MUJI",
+    area: "หลายสาขาในโตเกียว",
+    nearDay: "ระหว่างทริป",
+    tier: "ปานกลาง",
+    description: "กระเป๋าเดินทางล้อลื่นแบบเรียบๆ ที่คนไทยนิยม ดูของจริงก่อนซื้อได้ (สต๊อกแต่ละสาขาไม่เท่ากัน)",
+    mapsQuery: "MUJI store near Ueno Tokyo",
+  },
+  {
+    name: "ร้านในสนามบินนาริตะ",
+    area: "สนามบินนาริตะ",
+    nearDay: "วันที่ 5 (ทางเลือกสุดท้าย)",
+    tier: "สูง",
+    description: "มีขาย แต่ตัวเลือกน้อยและแพงกว่าในเมือง ถ้าซื้อที่นี่ต้องย้ายของก่อนเช็กอินและก่อนทำเรื่องคืนภาษี",
+    mapsQuery: "luggage store Narita Airport",
+  },
+];
+
+export const luggageTips: string[] = [
+  "ZIPAIR ราคาตั๋วพื้นฐานไม่รวมกระเป๋าโหลด — เช็กว่าซื้อน้ำหนักกระเป๋าโหลดขากลับไว้หรือยัง ถ้ายังควรซื้อเพิ่มออนไลน์ก่อนวันบิน",
+  "ถือขึ้นเครื่องฟรีได้ 2 ใบ รวมไม่เกิน 7 กก. ของหนักให้ใส่กระเป๋าโหลด",
+  "ซื้อกระเป๋าใบใหม่ช่วงเย็นวันที่ 4 หรือเช้าวันที่ 5 ใกล้โรงแรม จะได้ไม่ต้องลากไปทั้งทริป",
+  "กระเป๋าเดินทางนับรวมยอด Tax-Free ได้ — ถ้าซื้อพร้อมของอื่นในร้านเดียวกัน วันเดียวกัน ให้ครบ ¥5,000 ก็ขอคืนภาษีได้",
+  "แพ็กของที่ขอคืนภาษีให้หยิบง่าย เพราะต้องยืนยันกับศุลกากรก่อนเช็กอิน",
 ];

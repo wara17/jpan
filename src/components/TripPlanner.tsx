@@ -21,6 +21,7 @@ import TransitCardGuide from "./TransitCardGuide";
 import PackingChecklist from "./PackingChecklist";
 import DayPhotos, { PhotoCredits } from "./DayPhotos";
 import TaxRefundGuide from "./TaxRefundGuide";
+import LuggageGuide from "./LuggageGuide";
 
 const TripMap = dynamic(() => import("./TripMap"), {
   ssr: false,
@@ -356,6 +357,12 @@ export default function TripPlanner() {
           ช้อปแบบ Tax-Free ในญี่ปุ่น และของที่นำกลับเข้าไทย — ทริปนี้ใช้ระบบคืนภาษีแบบใหม่ของญี่ปุ่น
         </p>
         <TaxRefundGuide />
+      </div>
+
+      <div className="mx-auto mt-8 max-w-5xl px-4">
+        <h2 className="mb-1 text-lg font-bold text-slate-900">🧳 ซื้อกระเป๋าเดินทางที่ไหน</h2>
+        <p className="mb-4 text-sm text-slate-500">ของฝากเยอะจนกระเป๋าไม่พอ? ร้านตามเส้นทางของทริปนี้ เรียงจากใกล้โรงแรม</p>
+        <LuggageGuide />
       </div>
 
       <div className="mx-auto mt-8 max-w-5xl px-4">
