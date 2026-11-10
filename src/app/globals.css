@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Thai place-name labels on the trip map */
+.leaflet-tooltip.trip-tooltip {
+  background: rgba(255, 255, 255, 0.95);
+  color: #27272a;
+  border: 1px solid #e4e4e7;
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  white-space: nowrap;
+}
+.leaflet-tooltip.trip-tooltip-hotel {
+  font-weight: 700;
+  border-color: #b45309;
+  color: #92400e;
+}
+.leaflet-tooltip.trip-tooltip::before {
+  border-top-color: rgba(255, 255, 255, 0.95);
+}
+
+@media (prefers-color-scheme: dark) {
+  .leaflet-tooltip.trip-tooltip {
+    background: rgba(24, 24, 27, 0.95);
+    color: #f4f4f5;
+    border-color: #3f3f46;
+  }
+  .leaflet-tooltip.trip-tooltip::before {
+    border-top-color: rgba(24, 24, 27, 0.95);
+  }
+  .leaflet-tooltip.trip-tooltip-hotel {
+    color: #fbbf24;
+    border-color: #b45309;
+  }
+}
