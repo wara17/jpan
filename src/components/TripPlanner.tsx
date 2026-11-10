@@ -19,6 +19,7 @@ import {
 } from "@/lib/itinerary";
 import TransitCardGuide from "./TransitCardGuide";
 import PackingChecklist from "./PackingChecklist";
+import DayPhotos, { PhotoCredits } from "./DayPhotos";
 
 const TripMap = dynamic(() => import("./TripMap"), {
   ssr: false,
@@ -190,6 +191,8 @@ export default function TripPlanner() {
                     วันที่ {day.day} · {day.date} ({day.weekday}) — {day.title}
                   </h3>
                 </div>
+
+                <DayPhotos day={day} />
 
                 <div className="mb-3 space-y-1.5">
                   <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">การเดินทางวันนี้</div>
@@ -401,6 +404,10 @@ export default function TripPlanner() {
             ))}
           </ul>
         </SectionCard>
+      </div>
+
+      <div className="mx-auto max-w-5xl px-4 pb-8">
+        <PhotoCredits />
       </div>
 
       <footer className="bg-gradient-to-r from-sky-700 to-sky-500 py-5 text-center text-sm font-medium tracking-wide text-white">

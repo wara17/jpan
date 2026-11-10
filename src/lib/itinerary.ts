@@ -43,6 +43,8 @@ export type Activity = {
   lng?: number;
   note?: string;
   mapsQuery?: string;
+  /** Key into `placePhotos` (src/lib/photos.ts) */
+  photo?: string;
 };
 
 export type DayBudget = {
@@ -216,7 +218,7 @@ export const itinerary: Day[] = [
       total: "~2,170 บาท/คน",
     },
     activities: [
-      { time: "07:30 น.", title: "ถึงสนามบินนาริตะ (NRT)", lat: 35.772, lng: 140.3929 },
+      { time: "07:30 น.", title: "ถึงสนามบินนาริตะ (NRT)", photo: "narita", lat: 35.772, lng: 140.3929 },
       {
         time: "08:30 น.",
         title: "นั่ง Keisei Skyliner ไปสถานี Keisei Ueno",
@@ -234,7 +236,7 @@ export const itinerary: Day[] = [
       },
       {
         time: "11:00 น.",
-        title: "วัดเซ็นโซจิ (อาซากุสะ)",
+        title: "วัดเซ็นโซจิ (อาซากุสะ)", photo: "sensoji",
         address: "2-3-1 Asakusa, Taito-ku, Tokyo",
         transportation: "Tokyo Metro (สาย Ginza)",
         duration: "15 นาที",
@@ -243,7 +245,7 @@ export const itinerary: Day[] = [
       },
       {
         time: "13:00 น.",
-        title: "ถนนนากามิเสะ",
+        title: "ถนนนากามิเสะ", photo: "nakamise",
         transportation: "เดิน",
         lat: 35.7139,
         lng: 139.7966,
@@ -252,7 +254,7 @@ export const itinerary: Day[] = [
       },
       {
         time: "14:00 น.",
-        title: "ตลาดอาเมะโยโกะ",
+        title: "ตลาดอาเมะโยโกะ", photo: "ameyoko",
         address: "4 Chome-10-11 Ueno, Taito-ku, Tokyo",
         transportation: "เดิน",
         lat: 35.7099,
@@ -314,7 +316,7 @@ export const itinerary: Day[] = [
     activities: [
       {
         time: "08:30 น.",
-        title: "ศาลเจ้าเมจิ",
+        title: "ศาลเจ้าเมจิ", photo: "meiji",
         address: "1-1 Yoyogikamizonocho, Shibuya-ku, Tokyo",
         transportation: "JR Yamanote Line",
         duration: "20 นาที",
@@ -323,7 +325,7 @@ export const itinerary: Day[] = [
       },
       {
         time: "10:30 น.",
-        title: "สวนชินจูกุเกียวเอ็น",
+        title: "สวนชินจูกุเกียวเอ็น", photo: "gyoen",
         address: "11 Naitomachi, Shinjuku City, Tokyo",
         transportation: "เดิน",
         duration: "15 นาที",
@@ -339,7 +341,7 @@ export const itinerary: Day[] = [
       },
       {
         time: "14:30 น.",
-        title: "ห้าแยกชิบูย่า",
+        title: "ห้าแยกชิบูย่า", photo: "shibuya",
         address: "2 Chome-24-12 Shibuya, Shibuya-ku, Tokyo",
         transportation: "JR Yamanote Line",
         duration: "15 นาที",
@@ -348,7 +350,7 @@ export const itinerary: Day[] = [
       },
       {
         time: "15:30 น.",
-        title: "ย่านนากาเมกุโระ (ช้อปปิ้ง & คาเฟ่)",
+        title: "ย่านนากาเมกุโระ (ช้อปปิ้ง & คาเฟ่)", photo: "nakameguro",
         address: "1 Chome-23-3 Kamimeguro, Meguro-ku, Tokyo",
         transportation: "Tokyo Metro สาย Hibiya",
         duration: "15 นาที",
@@ -417,7 +419,7 @@ export const itinerary: Day[] = [
       },
       {
         time: "09:30 น.",
-        title: "วัดโงคุราคุจิ",
+        title: "วัดโงคุราคุจิ", photo: "gokurakuji",
         address: "4-2-7 Gokurakuji, Kamakura",
         transportation: "รถไฟสาย Enoden",
         duration: "10 นาที",
@@ -426,7 +428,7 @@ export const itinerary: Day[] = [
       },
       {
         time: "10:30 น.",
-        title: "พระใหญ่คามาคุระ (วัดโคโตคุอิน)",
+        title: "พระใหญ่คามาคุระ (วัดโคโตคุอิน)", photo: "daibutsu",
         address: "4-2-28 Hase, Kamakura",
         transportation: "เดิน / รถบัส",
         duration: "10 นาที",
@@ -450,7 +452,7 @@ export const itinerary: Day[] = [
       },
       {
         time: "15:00 น.",
-        title: "ศาลเจ้าทสึรุงะโอกะ ฮาจิมังงู",
+        title: "ศาลเจ้าทสึรุงะโอกะ ฮาจิมังงู", photo: "hachimangu",
         address: "2 Chome-1-31 Yukinoshita, Kamakura",
         transportation: "เดิน / รถบัส",
         duration: "10 นาที",
@@ -518,7 +520,7 @@ export const itinerary: Day[] = [
     activities: [
       {
         time: "08:30 น.",
-        title: "โตเกียวสกายทรี",
+        title: "โตเกียวสกายทรี", photo: "skytree",
         address: "1 Chome-1-2 Oshiage, Sumida-ku, Tokyo",
         transportation: "รถไฟใต้ดิน / Toei Asakusa Line",
         duration: "25 นาที",
@@ -527,7 +529,7 @@ export const itinerary: Day[] = [
       },
       {
         time: "11:00 น.",
-        title: "ย่านอากิฮาบาระ",
+        title: "ย่านอากิฮาบาระ", photo: "akihabara",
         address: "1 Chome Sotokanda, Chiyoda-ku, Tokyo",
         transportation: "JR Yamanote Line",
         duration: "20 นาที",
@@ -543,7 +545,7 @@ export const itinerary: Day[] = [
       },
       {
         time: "14:30 น.",
-        title: "โอไดบะ - Gundam Base Tokyo",
+        title: "โอไดบะ - Gundam Base Tokyo", photo: "gundam",
         address: "1 Chome-1-10 Aomi, Koto-ku, Tokyo",
         transportation: "Yurikamome Line",
         duration: "30 นาที",
@@ -592,7 +594,7 @@ export const itinerary: Day[] = [
     activities: [
       {
         time: "08:30 น.",
-        title: "สวนสัตว์อุเอโนะ",
+        title: "สวนสัตว์อุเอโนะ", photo: "uenozoo",
         address: "9-83 Uenokoen, Taito-ku, Tokyo",
         transportation: "เดิน",
         duration: "10 นาที",
@@ -601,7 +603,7 @@ export const itinerary: Day[] = [
       },
       {
         time: "10:30 น.",
-        title: "ช้อปปิ้งตลาดอาเมะโยโกะ (รอบสุดท้าย)",
+        title: "ช้อปปิ้งตลาดอาเมะโยโกะ (รอบสุดท้าย)", photo: "ameyoko",
         address: "4 Chome-10-11 Ueno, Taito-ku, Tokyo",
         transportation: "เดิน",
         lat: 35.7099,
@@ -622,7 +624,7 @@ export const itinerary: Day[] = [
         lat: 35.7128,
         lng: 139.7825,
       },
-      { time: "14:30 น.", title: "ถึงสนามบินนาริตะ (NRT)", lat: 35.772, lng: 140.3929 },
+      { time: "14:30 น.", title: "ถึงสนามบินนาริตะ (NRT)", photo: "narita", lat: 35.772, lng: 140.3929 },
       {
         time: "14:30 น.",
         title: "เช็กอิน & ผ่านตรวจคนเข้าเมือง (ควรถึงก่อนเครื่องออกอย่างน้อย 3 ชม.)",
